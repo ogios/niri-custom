@@ -827,7 +827,7 @@ impl<W: LayoutElement> Tile<W> {
 
         let scale = Scale::from(self.scale);
 
-        let win_alpha = if self.is_fullscreen || self.window.is_ignoring_opacity_window_rule() {
+        let win_alpha = if self.window.is_ignoring_opacity_window_rule() {
             1.
         } else {
             self.window.rules().opacity.unwrap_or(1.).clamp(0., 1.)
@@ -1023,17 +1023,6 @@ impl<W: LayoutElement> Tile<W> {
             .chain(window_popups.into_iter().flatten())
             .chain(rounded_corner_damage)
             .chain(window_surface.into_iter().flatten());
-
-        let elem = self.is_fullscreen.then(|| {
-            SolidColorRenderElement::from_buffer(
-                &self.fullscreen_backdrop,
-                location,
-                1.,
-                Kind::Unspecified,
-            )
-            .into()
-        });
-        let rv = rv.chain(elem);
 
         let elem = self.effective_border_width().map(|width| {
             self.border
