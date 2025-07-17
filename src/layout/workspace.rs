@@ -570,8 +570,11 @@ impl<W: LayoutElement> Workspace<W> {
 
         match target {
             WorkspaceAddWindowTarget::Auto => {
-                // Don't steal focus from an active fullscreen window.
-                let activate = activate.map_smart(|| !self.is_active_fullscreen());
+                // // Don't steal focus from an active fullscreen window.
+                // let activate = activate.map_smart(|| !self.is_active_fullscreen());
+
+                // steal focus even if it's fullscreen
+                let activate = true;
 
                 // If the tile is pending fullscreen, open it in the scrolling layout where it can
                 // go fullscreen.
