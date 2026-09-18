@@ -1276,47 +1276,6 @@ impl<W: LayoutElement> Tile<W> {
                 });
         }
 
-        if fullscreen_progress > 0. {
-            let alpha = fullscreen_progress as f32;
-
-            // During the un/fullscreen animation, render a border element in order to use the
-            // animated corner radius.
-            if fullscreen_progress < 1. && has_border_shader {
-                let border_width = self.visual_border_width().unwrap_or(0.);
-                let radius = self
-                    .window
-                    .geometry_corner_radius()
-                    .expanded_by(border_width as f32)
-                    .scaled_by(1. - expanded_progress as f32);
-
-                let size = self.fullscreen_backdrop.size();
-                let color = self.fullscreen_backdrop.color();
-                let elem = BorderRenderElement::new(
-                    size,
-                    Rectangle::from_size(size),
-                    GradientInterpolation::default(),
-                    Color::from_color32f(color),
-                    Color::from_color32f(color),
-                    0.,
-                    Rectangle::from_size(size),
-                    0.,
-                    radius,
-                    scale.x as f32,
-                    alpha,
-                )
-                .with_location(location);
-                push(elem.into());
-            } else {
-                let elem = SolidColorRenderElement::from_buffer(
-                    &self.fullscreen_backdrop,
-                    location,
-                    alpha,
-                    Kind::Unspecified,
-                );
-                push(elem.into());
-            }
-        }
-
         if let Some(width) = self.visual_border_width() {
             self.border.render(
                 ctx.renderer,
